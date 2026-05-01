@@ -1,0 +1,9 @@
+# alias<TAB>author-slug
+# Use this file to force DOI author name variants to local team profile slugs.
+# Example:
+# J. Doe	dr-john-doe
+
+Willem de Koning	willem-de-koning
+W. de Koning	willem-de-koning
+W de Koning	willem-de-koning
+de Koning, Willem	willem-de-koning

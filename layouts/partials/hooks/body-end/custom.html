@@ -1,0 +1,111 @@
+<script>
+  (function () {
+    function getCollectionItems(section) {
+      const selectors = [
+        '.pub-list-item',
+        '.card-simple.view-card',
+        '.media.stream-item'
+      ];
+      return selectors
+        .map((selector) => Array.from(section.querySelectorAll(selector)))
+        .find((items) => items.length > 0) || [];
+    }
+
+    function initializeToggle(button) {
+      const targetClass = button.dataset.targetClass;
+      const initial = parseInt(button.dataset.initial || '0', 10);
+      const moreLabel = button.dataset.moreLabel || 'Show more';
+      const lessLabel = button.dataset.lessLabel || 'Show less';
+
+      if (!targetClass || !Number.isFinite(initial) || initial <= 0) {
+        return;
+      }
+
+      const section = document.querySelector('section.' + targetClass);
+      if (!section) {
+        return;
+      }
+
+      const items = getCollectionItems(section);
+      if (items.length <= initial) {
+        button.style.display = 'none';
+        return;
+      }
+
+      items.forEach((item, index) => {
+        if (index >= initial) {
+          item.classList.add('collection-collapsed-item');
+        }
+      });
+
+      let expanded = false;
+      button.textContent = moreLabel;
+
+      button.addEventListener('click', function () {
+        expanded = !expanded;
+        items.forEach((item, index) => {
+          if (index >= initial) {
+            item.classList.toggle('collection-collapsed-item', !expanded);
+          }
+        });
+        button.textContent = expanded ? lessLabel : moreLabel;
+      });
+    }
+
+    function applyThesisCoverSwap() {
+      const thesisImages = document.querySelectorAll('section.thesis-showcase .article-banner');
+      thesisImages.forEach(function (img) {
+        const link = img.closest('a[href]');
+        if (!link) {
+          return;
+        }
+
+        const href = link.getAttribute('href') || '';
+        if (!href.startsWith('/publications/theses/')) {
+          return;
+        }
+
+        const normalized = href.endsWith('/') ? href : href + '/';
+        const preferredSrc = normalized + 'featured.jpg';
+        const fallbackSrc = img.getAttribute('src');
+
+        // Disable any lazyloader/srcset override from the theme scripts.
+        img.removeAttribute('srcset');
+        img.removeAttribute('data-src');
+        img.removeAttribute('data-srcset');
+
+        if (img.getAttribute('src') !== preferredSrc) {
+          img.setAttribute('src', preferredSrc);
+        }
+
+        img.onerror = function () {
+          if (fallbackSrc) {
+            img.setAttribute('src', fallbackSrc);
+          }
+        };
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const buttons = document.querySelectorAll('.js-expand-collection');
+      buttons.forEach(initializeToggle);
+
+      // Hugo's card thumbnail pipeline crops thesis covers to a landscape ratio.
+      // Replace thesis card images with each bundle's original featured.jpg.
+      applyThesisCoverSwap();
+
+      // Re-apply after theme scripts and lazy loaders run.
+      window.addEventListener('load', applyThesisCoverSwap);
+      setTimeout(applyThesisCoverSwap, 300);
+      setTimeout(applyThesisCoverSwap, 900);
+
+      const thesisSection = document.querySelector('section.thesis-showcase');
+      if (thesisSection && window.MutationObserver) {
+        const observer = new MutationObserver(function () {
+          applyThesisCoverSwap();
+        });
+        observer.observe(thesisSection, { childList: true, subtree: true, attributes: true });
+      }
+    });
+  })();
+</script>
