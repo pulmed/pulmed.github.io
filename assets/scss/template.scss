@@ -152,7 +152,7 @@ section.thesis-showcase .card-simple.view-card img {
 section.thesis-showcase .card-simple.view-card .img-hover-zoom {
   width: 100%;
   max-width: 270px;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 2 / 3;
   height: auto;
   margin: 0 auto;
   display: flex;
@@ -201,7 +201,7 @@ section.thesis-showcase .card-simple .article-style {
   position: relative;
   width: 100%;
   max-width: 980px;
-  min-height: 760px;
+  min-height: 860px;
   margin: 2rem auto 1rem;
 }
 
@@ -272,33 +272,33 @@ section.thesis-showcase .card-simple .article-style {
 }
 
 .circle-genomics {
-  left: 5%;
-  top: 35%;
+  left: calc(50% - 335px);
+  top: calc(50% - 240px);
 }
 
 .circle-transcriptomics {
-  left: 39%;
-  top: 5%;
+  left: calc(50% - 110px);
+  top: calc(50% - 370px);
 }
 
 .circle-proteomics {
-  left: 5%;
-  top: 64%;
+  left: calc(50% - 335px);
+  top: calc(50% + 20px);
 }
 
 .circle-epigenomics {
-  right: 5%;
-  top: 64%;
+  left: calc(50% + 115px);
+  top: calc(50% + 20px);
 }
 
 .circle-single-cell {
-  right: 5%;
-  top: 35%;
+  left: calc(50% + 115px);
+  top: calc(50% - 240px);
 }
 
 .circle-spatial {
-  left: 39%;
-  top: 84%;
+  left: calc(50% - 110px);
+  top: calc(50% + 150px);
 }
 
 @media (max-width: 600px) {
