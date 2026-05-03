@@ -26,14 +26,17 @@ sections:
       text:
       count: 5
       filters:
-        author: ''
-        category: ''
+        folders:
+          - post
+          - publications
+          - research
+          - projects
+          - software
+          - collaborations
+          - join-us
         exclude_featured: false
-        publication_type: ''
-        tag: ''
       offset: 0
       order: desc
-      page_type: post
     design:
       view: card
       columns: '1'
